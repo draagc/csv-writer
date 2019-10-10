@@ -4,13 +4,13 @@ const createCsvStringifier = require('csv-writer').createObjectCsvStringifier;
 describe('Stringify object array', () => {
     const csvStringifier = createCsvStringifier({
         header: [
-            {id: 'name', title: 'NAME'},
-            {id: 'lang', title: 'LANGUAGE'}
+            { id: 'name', title: 'NAME' },
+            { id: 'lang', title: 'LANGUAGE' }
         ]
     });
     const records = [
-        {name: 'Bob',  lang: 'French, English'},
-        {name: 'Mary', lang: 'English'}
+        { name: 'Bob', lang: 'French, English' },
+        { name: 'Mary', lang: 'English' }
     ];
 
     it('stringifies a header', () => {
@@ -19,5 +19,27 @@ describe('Stringify object array', () => {
 
     it('stringifies records', () => {
         assert.deepEqual(csvStringifier.stringifyRecords(records), 'Bob,"French, English"\nMary,English\n');
+    });
+});
+
+describe('Stringify object array with pipe delimiter', () => {
+    const csvStringifier = createCsvStringifier({
+        header: [
+            { id: 'name', title: 'NAME' },
+            { id: 'lang', title: 'LANGUAGE' }
+        ],
+        fieldDelimiter: '|',
+    });
+    const records = [
+        { name: 'Bob', lang: 'French, English' },
+        { name: 'Mary', lang: 'English' }
+    ];
+
+    it('stringifies a header', () => {
+        assert.deepEqual(csvStringifier.getHeaderString(), 'NAME|LANGUAGE\n');
+    });
+
+    it('stringifies records', () => {
+        assert.deepEqual(csvStringifier.stringifyRecords(records), 'Bob|French, English\nMary|English\n');
     });
 });
